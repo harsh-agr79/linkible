@@ -16,12 +16,24 @@ class Blog extends Model
         'published_at',
         'cover_image',
         'recommendations',
+        'is_pinned',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
         'recommendations' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (Blog $blog) {
+            if ($blog->is_pinned) {
+                Blog::where('type', $blog->type)
+                    ->where('id', '!=', $blog->id)
+                    ->update(['is_pinned' => false]);
+            }
+        });
+    }
 
     // Optional accessor for retrieving recommended blog objects
     public function recommendedPosts()

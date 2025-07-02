@@ -7,7 +7,7 @@ use App\Filament\Resources\BlogResource\RelationManagers;
 use App\Models\Blog;
 use Filament\Forms;
 use Filament\Forms\Components\ {
-    TextInput, Textarea, Select, FileUpload, RichEditor, DatePicker, MultiSelect}
+    TextInput, Textarea, Select, FileUpload, RichEditor, DatePicker, MultiSelect, Toggle}
     ;
     use Filament\Forms\Form;
     use Filament\Resources\Resource;
@@ -38,6 +38,18 @@ use Filament\Forms\Components\ {
             ] )
             ->helperText( 'Only letters, numbers, dashes (-), and underscores (_) are allowed. No spaces or special characters.' )
             ->maxLength( 255 ),
+            Toggle::make('is_pinned')
+            ->label('Pin this ' . ($record?->type ?? 'item'))
+            ->helperText('Only one blog and one case study can be pinned at a time.')
+            ->reactive()
+            ->afterStateUpdated(function ($state, callable $set, $get) {
+                if ($state) {
+                    // Automatically unpin others of the same type
+                    \App\Models\Blog::where('type', $get('type'))
+                        ->where('id', '!=', $get('id'))
+                        ->update(['is_pinned' => false]);
+                }
+            }),
             TextInput::make( 'meta_title' )->required()->label( 'Meta Title' ),
             Textarea::make( 'meta_description' )->required()->label( 'Meta Description' )->rows( 3 ),
             RichEditor::make( 'content' )
@@ -91,6 +103,7 @@ use Filament\Forms\Components\ {
             ->circular(false), // or true if you want round images
             Tables\Columns\TextColumn::make( 'title' )->searchable()->sortable(),
             Tables\Columns\TextColumn::make( 'type' )->badge(),
+            Tables\Columns\BooleanColumn::make( 'is_pinned' ),
             Tables\Columns\TextColumn::make( 'published_at' )->date(),
         ] )
         ->filters( [
