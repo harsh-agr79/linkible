@@ -12,12 +12,14 @@ class BlogController extends Controller
         $pinned = Blog::where('type', 'blog')
             ->where('is_pinned', true)
             ->orderByDesc('published_at')
+            ->with('recommendedPosts') // Eager load recommended posts
             ->first();
 
         // Fallback to latest published blog if no pinned one
         if (!$pinned) {
             $pinned = Blog::where('type', 'blog')
                 ->orderByDesc('published_at')
+                ->with('recommendedPosts') // Eager load recommended posts
                 ->first();
         }
 
@@ -25,6 +27,7 @@ class BlogController extends Controller
         $blogs = Blog::where('type', 'blog')
             ->when($pinned, fn ($query) => $query->where('id', '!=', $pinned->id))
             ->orderBy('published_at', 'desc')
+             ->with('recommendedPosts')
             ->get();
 
         return response()->json([
@@ -38,12 +41,14 @@ class BlogController extends Controller
         $pinned = Blog::where('type', 'case_study')
             ->where('is_pinned', true)
             ->orderByDesc('published_at')
+             ->with('recommendedPosts')
             ->first();
 
         // Fallback to latest published case study if no pinned one
         if (!$pinned) {
             $pinned = Blog::where('type', 'case_study')
                 ->orderByDesc('published_at')
+                 ->with('recommendedPosts')
                 ->first();
         }
 
@@ -51,6 +56,7 @@ class BlogController extends Controller
         $caseStudies = Blog::where('type', 'case_study')
             ->when($pinned, fn ($query) => $query->where('id', '!=', $pinned->id))
             ->orderBy('published_at', 'desc')
+             ->with('recommendedPosts')
             ->get();
 
         return response()->json([
@@ -61,7 +67,7 @@ class BlogController extends Controller
 
     public function show($slug)
     {
-        $blog = Blog::where('slug', $slug)->firstOrFail();
+        $blog = Blog::where('slug', $slug) ->with('recommendedPosts')->firstOrFail();
         return response()->json($blog);
     }
 }
