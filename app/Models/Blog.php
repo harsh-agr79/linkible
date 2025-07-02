@@ -37,8 +37,12 @@ class Blog extends Model
     }
 
     // Optional accessor for retrieving recommended blog objects
-    public function recommendedPosts()
+    public function getRecommendedPostsAttribute()
     {
-        return Blog::whereIn('id', $this->recommendations ?? [])->get();
+        if (!$this->recommendations || !is_array($this->recommendations)) {
+            return collect(); // Return empty collection if null or invalid
+        }
+
+        return Blog::whereIn('id', $this->recommendations)->get();
     }
 }
