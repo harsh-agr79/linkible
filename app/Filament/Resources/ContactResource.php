@@ -36,6 +36,7 @@ class ContactResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->poll('5s')
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
