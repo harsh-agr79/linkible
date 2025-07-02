@@ -22,6 +22,7 @@ class Blog extends Model
     protected $casts = [
         'published_at' => 'datetime',
         'recommendations' => 'array',
+        'is_pinned' => 'boolean',
     ];
 
     protected static function booted(): void
