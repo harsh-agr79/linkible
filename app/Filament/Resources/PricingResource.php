@@ -27,11 +27,8 @@ class PricingResource extends Resource
                FileUpload::make('icon')
                 ->label('SVG Icon')
                 ->image()
-                ->imagePreviewHeight('100')
-                // ->directory('pricing') // or any configured disk
                 ->directory('pricing-icons')
                 ->acceptedFileTypes(['image/svg+xml'])
-                ->preserveFilenames()
                 ->maxSize(1024), // 1MB
             Forms\Components\TextInput::make('title')->required(),
             Forms\Components\TextInput::make('price')
