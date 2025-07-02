@@ -83,6 +83,12 @@ use Filament\Forms\Components\ {
         ->defaultSort( 'published_at', 'desc' )
         ->poll( '10s' )
         ->columns( [
+            Tables\Columns\ImageColumn::make('cover_image')
+            ->label('Cover')
+            ->disk('public') // adjust if using a different disk
+            ->height(60)
+            ->width(60)
+            ->circular(false), // or true if you want round images
             Tables\Columns\TextColumn::make( 'title' )->searchable()->sortable(),
             Tables\Columns\TextColumn::make( 'type' )->badge(),
             Tables\Columns\TextColumn::make( 'published_at' )->date(),
