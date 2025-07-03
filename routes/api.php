@@ -22,7 +22,7 @@ Route::get('/faqs', [FAQController::class, 'getFaq']);
 
 Route::get('policy', [PolicyController::class, 'policy']);
 
-Router::get('terms', [PolicyController::class, 'terms']);
+Route::get('terms', [PolicyController::class, 'terms']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
