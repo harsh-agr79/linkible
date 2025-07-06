@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use App\Models\MetaTag;
 // Assuming you have a Blog model
 
 class BlogController extends Controller {
@@ -33,6 +34,7 @@ class BlogController extends Controller {
         $blogs->each ( fn ( $blog ) => $blog->setRelation( 'recommended_posts', $blog->recommended_posts ) );
 
         return response()->json( [
+            'meta_tags' => MetaTag::where('slug', 'blogs')->first(),
             'pinned' => $pinned,
             'blogs' => $blogs,
         ] );

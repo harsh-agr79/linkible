@@ -22,4 +22,8 @@ class ContactController extends Controller
 
         return response()->json(['message' => 'Contact request submitted successfully.'], 201);
     }
+
+    public function contactMeta(){
+        return response()->json(['meta_tags' => MetaTag::where('slug', 'contact')->first(),], 200);
+    }
 }

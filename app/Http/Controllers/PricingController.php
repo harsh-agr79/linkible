@@ -11,6 +11,6 @@ class PricingController extends Controller
     {
         $pricings = Pricing::orderBy('order', 'asc')->get();
 
-        return response()->json($pricings);
+        return response()->json(['pricings' => $pricings, 'meta_tags' => MetaTag::where('slug', 'pricing')->first()]);
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\FAQController;
 use App\Http\Controllers\PolicyController;
 
 Route::post('/contact', [ContactController::class, 'contact']);
+Route::get('/contact-meta', [ContactController::class, 'contactMeta']);
 
 Route::get('/pricings', [PricingController::class, 'getPricings']);
 

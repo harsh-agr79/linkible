@@ -9,6 +9,6 @@ class FAQController extends Controller
 {
     public function getFaq(Request $request){
         $faq = FAQ::orderBy('order', 'ASC')->get();
-        return response()->json($faq, 200);
+        return response()->json(["faqs" => $faq, 'meta_tags' => MetaTag::where('slug', 'faqs')->first()], 200);
     }
 }
