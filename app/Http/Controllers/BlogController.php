@@ -66,6 +66,7 @@ class BlogController extends Controller {
         $caseStudies->each ( fn ( $blog ) => $blog->setRelation( 'recommended_posts', $blog->recommended_posts ) );
 
         return response()->json( [
+            'meta_tags' => MetaTag::where('slug', 'case-studies')->first(),
             'pinned' => $pinned,
             'case_studies' => $caseStudies,
         ] );
