@@ -79,4 +79,20 @@ class BlogController extends Controller {
         return response()->json( $blog );
     }
 
+    public function incrementView($slug)
+    {
+        $blog = Blog::where('slug', $slug)->first();
+
+        if (!$blog) {
+            return response()->json(['message' => 'Blog not found'], 404);
+        }
+
+        $blog->increment('view_count');
+
+        return response()->json([
+            'message' => 'View count incremented',
+            // 'view_count' => $blog->view_count
+        ]);
+    }
+
 }

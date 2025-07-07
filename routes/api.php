@@ -29,6 +29,8 @@ Route::get('/terms', [PolicyController::class, 'terms']);
 Route::get('/links', [LinkController::class, 'getLinksList']);
 Route::get('/link/{id}', [LinkController::class, 'getLinkData']);
 
+Route::post('/blogs/{slug}/increment-view', [BlogController::class, 'incrementView']);
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');

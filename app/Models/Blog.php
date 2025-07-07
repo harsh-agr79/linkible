@@ -17,6 +17,7 @@ class Blog extends Model
         'cover_image',
         'recommendations',
         'is_pinned',
+        'view_count'
     ];
 
     protected $casts = [

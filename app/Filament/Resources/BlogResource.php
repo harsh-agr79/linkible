@@ -103,6 +103,7 @@ use Filament\Forms\Components\ {
             ->circular(false), // or true if you want round images
             Tables\Columns\TextColumn::make( 'title' )->searchable()->sortable(),
             Tables\Columns\TextColumn::make( 'type' )->badge(),
+            Tables\Columns\TextColumn::make( 'view_count' )->badge(),
             Tables\Columns\BooleanColumn::make( 'is_pinned' ),
             Tables\Columns\TextColumn::make( 'published_at' )->date(),
         ] )
