@@ -7,6 +7,7 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\LinkController;
 
 Route::post('/contact', [ContactController::class, 'contact']);
 Route::get('/contact-meta', [ContactController::class, 'contactMeta']);
@@ -21,9 +22,12 @@ Route::get('/blog/{slug}', [BlogController::class, 'show']);
 
 Route::get('/faqs', [FAQController::class, 'getFaq']);
 
-Route::get('policy', [PolicyController::class, 'policy']);
+Route::get('/policy', [PolicyController::class, 'policy']);
 
-Route::get('terms', [PolicyController::class, 'terms']);
+Route::get('/terms', [PolicyController::class, 'terms']);
+
+Route::get('/links', [LinkController::class, 'getLinksList']);
+Route::get('/link/{id}', [LinkController::class, 'getLinkData']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
