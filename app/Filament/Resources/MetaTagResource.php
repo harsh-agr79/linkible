@@ -36,6 +36,11 @@ class MetaTagResource extends Resource
                 ->label('Meta Description')
                 ->required()
                 ->maxLength(255),
+                FileUpload::make('meta_image')
+                ->label('Meta Image')
+                ->image()
+                ->directory('meta-images') // optional: uploads to storage/app/meta-images
+                ->nullable(),
             ]);
     }
 
@@ -43,6 +48,7 @@ class MetaTagResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('meta_image'),
                 Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('meta_title')->searchable(),
                 Tables\Columns\TextColumn::make('meta_description')->searchable(),
