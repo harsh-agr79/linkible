@@ -30,6 +30,11 @@ class PolicyResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Textarea::make('meta_description')
                     ->label('Meta Description'),
+                Forms\Components\FileUpload::make('meta_image')
+                    ->label('Meta Image')
+                    ->image()
+                    ->directory('policy-meta-images')
+                    ->nullable(),
                 Forms\Components\RichEditor::make('content')
                     ->label('Policy Content')
                     ->toolbarButtons([

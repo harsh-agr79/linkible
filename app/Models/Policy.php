@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Policy extends Model
 {
      protected $fillable = ['title', 'content', 'meta_title',
-        'meta_description',];
+        'meta_description', 'meta_image'];
 }

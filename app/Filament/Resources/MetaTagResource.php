@@ -36,7 +36,7 @@ class MetaTagResource extends Resource
                 ->label('Meta Description')
                 ->required()
                 ->maxLength(255),
-                FileUpload::make('meta_image')
+                 Forms\Components\FileUpload::make('meta_image')
                 ->label('Meta Image')
                 ->image()
                 ->directory('meta-images') // optional: uploads to storage/app/meta-images
