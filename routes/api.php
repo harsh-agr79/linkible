@@ -8,6 +8,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\LinkController;
+use App\Http\Controllers\HomePageController;
 
 Route::post('/contact', [ContactController::class, 'contact']);
 Route::get('/contact-meta', [ContactController::class, 'contactMeta']);
@@ -30,6 +31,8 @@ Route::get('/links', [LinkController::class, 'getLinksList']);
 Route::get('/link/{id}', [LinkController::class, 'getLinkData']);
 
 Route::post('/blogs/{slug}/increment-view', [BlogController::class, 'incrementView']);
+
+Route::get('/homepage', [HomePageController::class, 'homepage']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
