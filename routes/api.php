@@ -11,6 +11,8 @@ use App\Http\Controllers\LinkController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\IndustryController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Middleware\ApiKey;
 
 Route::post('/contact', [ContactController::class, 'contact']);
 Route::get('/contact-meta', [ContactController::class, 'contactMeta']);
@@ -40,6 +42,13 @@ Route::get('/about', [AboutController::class, 'getAboutUs']);
 
 Route::get('/industries', [IndustryController::class, 'getIndustriesList']);
 Route::get('/industry/{id}', [IndustryController::class, 'getIndustryData']);
+
+Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
+
+Route::middleware(api_key::class)->group(function () { 
+    Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
+});
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
