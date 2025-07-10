@@ -10,6 +10,7 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\IndustryController;
 
 Route::post('/contact', [ContactController::class, 'contact']);
 Route::get('/contact-meta', [ContactController::class, 'contactMeta']);
@@ -36,6 +37,9 @@ Route::post('/blogs/{slug}/increment-view', [BlogController::class, 'incrementVi
 Route::get('/homepage', [HomePageController::class, 'homepage']);
 
 Route::get('/about', [AboutController::class, 'getAboutUs']);
+
+Route::get('/industries', [IndustryController::class, 'getIndustriesList']);
+Route::get('/industry/{id}', [IndustryController::class, 'getIndustryData']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
