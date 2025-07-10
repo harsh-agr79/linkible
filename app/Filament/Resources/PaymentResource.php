@@ -54,7 +54,7 @@ class PaymentResource extends Resource
                     ->money('usd', divideBy: 100)
                     ->sortable(),
 
-                TextColumn::make('currency')->uppercase(),
+                TextColumn::make('currency'),
 
                 TextColumn::make('email')
                     ->label('Customer Email')
