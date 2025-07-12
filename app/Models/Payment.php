@@ -31,6 +31,10 @@ class Payment extends Model
         'amount' => 'integer',
     ];
 
+    protected $hidden = [
+        'meta',
+    ];
+
     /**
      * Relationship: Payment belongs to a Pricing plan.
      */
