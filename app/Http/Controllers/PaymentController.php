@@ -48,7 +48,7 @@ class PaymentController extends Controller
             ]
         );
 
-        return response()->json(['sessionId' => $session->id, 'session'=> $session]);
+        return response()->json(['sessionId' => $session->id]);
     }
 
 
