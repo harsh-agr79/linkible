@@ -14,7 +14,7 @@ class PaymentController extends Controller
    public function createPaymentIntent(Request $request)
     {
         $request->validate([
-            'amount' => 'required|integer|min:1', // in smallest currency unit (e.g., cents or paise)
+            'amount' => 'required|integer|min:1',
             'email' => 'nullable|email',
         ]);
 
@@ -26,7 +26,7 @@ class PaymentController extends Controller
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => 'Package Payment', // Optional: Can be dynamic
+                        'name' => 'Package Payment',
                     ],
                     'unit_amount' => $request->amount,
                 ],
