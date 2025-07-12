@@ -34,6 +34,7 @@ class PaymentResource extends Resource
     {
         return $table
         ->defaultSort('created_at', 'desc')
+        ->poll('3s')
             ->columns([
                 TextColumn::make('payment_intent_id')
                     ->label('Intent ID')
