@@ -19,6 +19,8 @@ class MetaTagResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
+    protected static ?string $navigationGroup = "Pages";
+
     public static function form(Form $form): Form
     {
         return $form
