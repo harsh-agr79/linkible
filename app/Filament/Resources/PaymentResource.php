@@ -94,9 +94,7 @@ class PaymentResource extends Resource
                     ->searchable()
                     ->wrap(),
                     TextColumn::make('message')
-                    ->label('message')
-                    ->searchable()
-                    ->wrap(),
+                    ->label('message'),
                     
 
                 TextColumn::make('created_at')
