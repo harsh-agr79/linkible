@@ -17,6 +17,8 @@ class Payment extends Model
         'name',
         'contact',
         'address',
+        'city',
+        'country',
         'company',
         'website',
         'message',
