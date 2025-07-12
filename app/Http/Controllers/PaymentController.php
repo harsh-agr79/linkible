@@ -25,15 +25,15 @@ class PaymentController extends Controller
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
-                    'product_data' => ['name' => 'Custom Payment'],
+                    'product_data' => ['name' => 'Package Payment'],
                     'unit_amount' => $request->amount,
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
             'customer_email' => $request->email,
-            'success_url' => config('app.url') . '/payment/success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => config('app.url') . '/payment/cancel',
+            'success_url' => 'https://linkible.vercel.app/payment/success',
+            'cancel_url' => 'https://linkible.vercel.app/payment/cancel',
         ]);
 
         // Optional: store by session ID instead (not intent yet)
