@@ -53,8 +53,8 @@ class PaymentController extends Controller
             'mode' => 'payment',
             'client_reference_id' => $orderId,
             'customer_email' => $request->email,
-            'success_url' => 'https://linkible.vercel.app/payment/success?order_id=' . $orderId,
-            'cancel_url' => 'https://linkible.vercel.app/payment/cancel',
+            'success_url' => env('FRONTEND_URL').'payment/success?order_id=' . $orderId,
+            'cancel_url' => env('FRONTEND_URL').'payment/cancel',
         ]);
 
         // Step 4: Store payment record
