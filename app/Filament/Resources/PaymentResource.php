@@ -40,6 +40,11 @@ class PaymentResource extends Resource
                     ->copyable()
                     ->searchable()
                     ->wrap(),
+                TextColumn::make('session_id')
+                    ->label('Intent ID')
+                    ->copyable()
+                    ->searchable()
+                    ->wrap(),
 
                 BadgeColumn::make('status')
                     ->colors([
