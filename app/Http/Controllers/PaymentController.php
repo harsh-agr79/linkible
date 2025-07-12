@@ -2,56 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Stripe\Stripe;
-use Stripe\PaymentIntent;
-use Stripe\Webhook;
 use App\Models\Payment;
+use App\Models\Pricing;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Stripe\Checkout\Session as StripeSession;
+use Stripe\Stripe;
+use Stripe\Webhook;
 
 class PaymentController extends Controller
 {
     public function createPaymentIntent(Request $request)
     {
         $request->validate([
-            'amount' => 'required|integer|min:1', // cents/paise
+            'pricing_id' => 'required|exists:pricings,id',
             'email' => 'nullable|email',
+            'name' => 'nullable|string',
+            'contact' => 'nullable|string',
+            'address' => 'nullable|string',
+            'company' => 'nullable|string',
+            'website' => 'nullable|string',
+            'message' => 'nullable|string',
         ]);
 
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        // Step 1: Get pricing and calculate Stripe amount in cents
+        $pricing = Pricing::findOrFail($request->pricing_id);
+        $amountInCents = intval($pricing->price * 100); // Stripe expects amount in cents
 
-        $session = \Stripe\Checkout\Session::create([
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        // Step 2: Generate unique order_id
+        $orderId = strtoupper(Str::uuid()->toString());
+
+        // Step 3: Create Checkout Session
+        $session = StripeSession::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
-                    'product_data' => ['name' => 'Package Payment'],
-                    'unit_amount' => $request->amount,
+                    'product_data' => [
+                        'name' => $pricing->title ?? 'Package Payment',
+                    ],
+                    'unit_amount' => $amountInCents,
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
+            'client_reference_id' => $orderId,
             'customer_email' => $request->email,
-            'success_url' => 'https://linkible.vercel.app/payment/success',
+            'success_url' => 'https://linkible.vercel.app/payment/success?order_id=' . $orderId,
             'cancel_url' => 'https://linkible.vercel.app/payment/cancel',
         ]);
 
-        // Optional: store by session ID instead (not intent yet)
+        // Step 4: Store payment record
         Payment::updateOrCreate(
             ['session_id' => $session->id],
             [
+                'order_id' => $orderId,
                 'status' => 'pending',
-                'amount' => $request->amount,
+                'amount' => $amountInCents,
                 'currency' => 'usd',
                 'email' => $request->email,
+                'name' => $request->name,
+                'contact' => $request->contact,
+                'address' => $request->address,
+                'company' => $request->company,
+                'website' => $request->website,
+                'message' => $request->message,
+                'pricing_id' => $pricing->id,
                 'meta' => $session->toArray(),
             ]
         );
 
         return response()->json(['sessionId' => $session->id]);
     }
-
-
 
     public function handleWebhook(Request $request)
     {
@@ -60,29 +85,31 @@ class PaymentController extends Controller
         $secret = env('STRIPE_WEBHOOK_SECRET');
 
         try {
-            $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $secret);
+            $event = Webhook::constructEvent($payload, $sigHeader, $secret);
         } catch (\Exception $e) {
+            Log::warning('Stripe webhook signature invalid: ' . $e->getMessage());
             return response('Invalid webhook signature.', 400);
         }
 
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
-
             $paymentIntentId = $session->payment_intent;
 
-            // Update the record using session_id
-            Payment::updateOrCreate(
-                ['session_id' => $session->id],
-                [
+            // Update existing payment record by session_id
+            $payment = Payment::where('session_id', $session->id)->first();
+
+            if ($payment) {
+                $payment->update([
                     'payment_intent_id' => $paymentIntentId,
                     'status' => 'succeeded',
                     'email' => $session->customer_email,
                     'meta' => json_encode($session),
-                ]
-            );
+                ]);
+            } else {
+                Log::warning("No payment found for session_id: {$session->id}");
+            }
         }
 
         return response('Webhook handled.', 200);
     }
-
 }

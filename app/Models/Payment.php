@@ -13,10 +13,27 @@ class Payment extends Model
         'amount',
         'currency',
         'email',
+        'order_id',
+        'name',
+        'contact',
+        'address',
+        'company',
+        'website',
+        'message',
+        'pricing_id',
         'meta',
     ];
 
     protected $casts = [
         'meta' => 'array',
+        'amount' => 'integer',
     ];
+
+    /**
+     * Relationship: Payment belongs to a Pricing plan.
+     */
+    public function pricing()
+    {
+        return $this->belongsTo(Pricing::class);
+    }
 }
