@@ -11,36 +11,48 @@ use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
-    public function createPaymentIntent(Request $request)
+   public function createPaymentIntent(Request $request)
     {
         $request->validate([
-            'amount' => 'required|integer|min:1', // in paise
+            'amount' => 'required|integer|min:1', // in smallest currency unit (e.g., cents or paise)
             'email' => 'nullable|email',
         ]);
 
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        $intent = PaymentIntent::create([
-            'amount' => $request->amount,
-            'currency' => 'USD',
-            'automatic_payment_methods' => ['enabled' => true],
-            'receipt_email' => $request->email,
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Package Payment', // Optional: Can be dynamic
+                    ],
+                    'unit_amount' => $request->amount,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'customer_email' => $request->email,
+            'success_url' => 'https://linkible.vercel.app/payment/success',
+            'cancel_url' => 'https://linkible.vercel.app/payment/cancel',
         ]);
 
-        // Store initial record as pending or processing
+        // Store session record
         Payment::updateOrCreate(
-            ['payment_intent_id' => $intent->id],
+            ['payment_intent_id' => $session->payment_intent],
             [
-                'status' => $intent->status,
-                'amount' => $intent->amount,
-                'currency' => $intent->currency,
-                'email' => $intent->receipt_email,
-                'meta' => $intent->toArray(),
+                'status' => 'pending',
+                'amount' => $request->amount,
+                'currency' => 'usd',
+                'email' => $request->email,
+                'meta' => $session->toArray(),
             ]
         );
 
-        return response()->json(['clientSecret' => $intent->client_secret]);
+        return response()->json(['sessionId' => $session->id]);
     }
+
 
     public function handleWebhook(Request $request)
     {
