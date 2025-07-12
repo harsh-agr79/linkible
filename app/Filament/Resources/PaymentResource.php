@@ -37,10 +37,12 @@ class PaymentResource extends Resource
             ->columns([
                 TextColumn::make('payment_intent_id')
                     ->label('Intent ID')
+                      ->limit(10)
                     ->copyable()
                     ->searchable()
                     ->wrap(),
                 TextColumn::make('session_id')
+                    ->limit(10)
                     ->label('Session ID')
                     ->copyable()
                     ->searchable()
@@ -59,13 +61,43 @@ class PaymentResource extends Resource
                     ->label('Amount ($)')
                     ->money('usd', divideBy: 100)
                     ->sortable(),
+                TextColumn::make('pricing.title')->label('Package')->searchable()->sortable(),
 
                 TextColumn::make('currency'),
 
+                TextColumn::make('name')
+                    ->label('Customer Name')
+                    ->searchable()
+                    ->wrap(),
                 TextColumn::make('email')
                     ->label('Customer Email')
                     ->searchable()
                     ->wrap(),
+                TextColumn::make('contact')
+                    ->label('Customer Contact')
+                    ->searchable()
+                    ->wrap(),
+                TextColumn::make('city')
+                    ->label('City')
+                    ->searchable()
+                    ->wrap(),
+                    TextColumn::make('country')
+                    ->label('Country')
+                    ->searchable()
+                    ->wrap(),
+                    TextColumn::make('website')
+                    ->label('Wesbite')
+                    ->searchable()
+                    ->wrap(),
+                    TextColumn::make('company')
+                    ->label('Company')
+                    ->searchable()
+                    ->wrap(),
+                    TextColumn::make('message')
+                    ->label('message')
+                    ->searchable()
+                    ->wrap(),
+                    
 
                 TextColumn::make('created_at')
                     ->label('Date')
