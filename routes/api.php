@@ -47,6 +47,7 @@ Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
 
 Route::middleware(ApiKey::class)->group(function () { 
     Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
+    Route::get('/order-successful/{id}', [PaymentController::class, 'getOrderDetails']);
 });
 
 

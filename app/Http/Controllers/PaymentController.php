@@ -112,4 +112,9 @@ class PaymentController extends Controller
 
         return response('Webhook handled.', 200);
     }
+
+    public function getOrderDetails(Request $request,$orderid){
+        $payment = Payment::where('order_id', $orderid)->first();
+        return response()->json($payment, 200);
+    }
 }

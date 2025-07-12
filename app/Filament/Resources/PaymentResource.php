@@ -36,6 +36,10 @@ class PaymentResource extends Resource
         ->defaultSort('created_at', 'desc')
         ->poll('3s')
             ->columns([
+                TextColumn::make('order_id')
+                    ->label('Order ID')
+                    ->copyable()
+                    ->searchable(),
                 TextColumn::make('payment_intent_id')
                     ->label('Intent ID')
                       ->limit(10)
