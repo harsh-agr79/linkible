@@ -22,6 +22,8 @@ class FeatureResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-star';
 
+    protected static ?string $navigationGroup = "Home Page";
+
     public static function form(Form $form): Form
     {
         return $form

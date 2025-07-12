@@ -21,6 +21,8 @@ class ProcessResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
+    protected static ?string $navigationGroup = "Home Page";
+
     public static function form(Form $form): Form
     {
         return $form

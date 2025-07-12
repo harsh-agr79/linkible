@@ -21,6 +21,8 @@ use Filament\Forms\Components\ {
 
         protected static ?string $navigationIcon = 'heroicon-o-pencil';
 
+        protected static ?string $navigationGroup = "Content";
+
         public static function form( Form $form ): Form {
             return $form
             ->schema( [

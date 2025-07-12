@@ -19,6 +19,8 @@ class FAQResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
 
+    protected static ?string $navigationGroup = "Pages";
+
     public static function form(Form $form): Form
     {
         return $form

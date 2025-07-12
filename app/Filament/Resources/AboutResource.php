@@ -26,6 +26,8 @@ class AboutResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-information-circle';
     protected static ?string $navigationLabel = 'About Us';
 
+    protected static ?string $navigationGroup = "Pages";
+
     public static function form(Form $form): Form
     {
         return $form
