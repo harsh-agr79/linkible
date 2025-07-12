@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Models\MetaTag;
-
+use App\Models\ContactInfo;
 
 class ContactController extends Controller
 {
@@ -26,6 +26,6 @@ class ContactController extends Controller
     }
 
     public function contactMeta(){
-        return response()->json(['meta_tags' => MetaTag::where('slug', 'contact')->first(),], 200);
+        return response()->json(['meta_tags' => MetaTag::where('slug', 'contact')->first(), 'contact_info' => ContactInfo::all()], 200);
     }
 }
