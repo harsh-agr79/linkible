@@ -41,7 +41,7 @@ class PaymentResource extends Resource
                     ->searchable()
                     ->wrap(),
                 TextColumn::make('session_id')
-                    ->label('Intent ID')
+                    ->label('Session ID')
                     ->copyable()
                     ->searchable()
                     ->wrap(),
