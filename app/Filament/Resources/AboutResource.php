@@ -43,6 +43,7 @@ class AboutResource extends Resource
                 TextInput::make('countries')->required(),
 
                 Textarea::make('our_story')->required(),
+                FileUpload::make('story_image')->required()->image(),
 
                 Repeater::make('values')
                     ->schema([
